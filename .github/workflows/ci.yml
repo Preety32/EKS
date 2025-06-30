@@ -33,6 +33,10 @@ jobs:
       # Trivy Scan
       - name: Trivy Scan
         run: docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image $GITHUB_SHA
+
+      - name: Debug image tag
+        run: |
+          echo "Tagging as: ${{ secrets.ECR_REPOSITORY_URI }}/actions-app:${{ github.sha }}"
      
      
       # Docker Image Build
@@ -40,7 +44,8 @@ jobs:
         run: |    
           docker build -t actions-app:${{ github.sha}} .
           docker tag actions-app:${{ github.sha}} ${{ secrets.ECR_REPOSITORY_URI}}/actions-app:${{github.sha}}
-      
+          docker tag actions-app:${{ github.sha }} ${{ secrets.ECR_REPOSITORY_URI }}/actions-app:latest
+
       # Set up AWS Credentials
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
