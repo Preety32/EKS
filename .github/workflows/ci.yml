@@ -37,6 +37,10 @@ jobs:
       - name: Debug image tag
         run: |
           echo "Tagging as: ${{ secrets.ECR_REPOSITORY_URI }}/actions-app:${{ github.sha }}"
+ 
+     # CHeck Secret value     
+      - name: Check secret value
+        run: echo "ECR_REPOSITORY_URI is: ${{ secrets.ECR_REPOSITORY_URI }}"
      
      
       # Docker Image Build
