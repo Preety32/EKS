@@ -22,17 +22,10 @@ jobs:
         with:
           node-version: '14'
 
-      # Build Docker Image
-      - name: Build Docker Image
-        run: |
-         docker build -t actions-app:${{ github.sha }} .
-         docker tag actions-app:${{ github.sha }} ${{ secrets.ECR_REPOSITORY_URI }}/actions-app:${{ github.sha }}
-         docker tag actions-app:${{ github.sha }} ${{ secrets.ECR_REPOSITORY_URI }}/actions-app:latest
-
       # Install NodeJS dependencies
       - name: Install NodeJS dependencies
         run: npm install
-
+ 
       # Docker Image Build
       - name: Build Docker Image
         run: docker build -t $GITHUB_SHA .
@@ -40,23 +33,13 @@ jobs:
       # Trivy Scan
       - name: Trivy Scan
         run: docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image $GITHUB_SHA
-
-#      - name: Debug image tag
-#        run: |
-#          echo "Tagging as: ${{ secrets.ECR_REPOSITORY_URI }}/actions-app:${{ github.sha }}"
- 
-     # CHeck Secret value     
-      - name: Check secret value
-        run: echo "ECR_REPOSITORY_URI is: ${{ secrets.ECR_REPOSITORY_URI }}"
-     
      
       # Docker Image Build
- #     - name: Build Docker Image
- #       run: |    
- #         docker build -t actions-app:${{ github.sha}} .
- #         docker tag actions-app:${{ github.sha}} ${{ secrets.ECR_REPOSITORY_URI}}/actions-app:${{github.sha}}
- #         docker tag actions-app:${{ github.sha }} ${{ secrets.ECR_REPOSITORY_URI }}/actions-app:latest
-
+      - name: Build Docker Image
+        run: |    
+          docker build -t actions-app:${{ github.sha}} .
+          docker tag actions-app:${{ github.sha}} ${{ secrets.ECR_REPOSITORY_URI}}/actions-app:latest
+      
       # Set up AWS Credentials
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
