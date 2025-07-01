@@ -33,7 +33,11 @@ jobs:
       # Trivy Scan
       - name: Trivy Scan
         run: docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image $GITHUB_SHA
-     
+   
+      - name: Check secret value
+        run: echo "ECR_REPOSITORY_URI is: ${{ secrets.ECR_REPOSITORY_URI }}"
+
+  
       # Docker Image Build
       - name: Build Docker Image
         run: |    
