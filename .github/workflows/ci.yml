@@ -41,11 +41,19 @@ jobs:
 
 
   
+#      # Docker Image Build
+#      - name: Build Docker Image
+#        run: |    
+#          docker build -t actions-app:${{ github.sha}} .
+#          docker tag actions-app:${{ github.sha}} ${{ secrets.ECR_REPOSITORY_URI}}/actions-app:latest
+
       # Docker Image Build
       - name: Build Docker Image
         run: |    
-          docker build -t actions-app:${{ github.sha}} .
-          docker tag actions-app:${{ github.sha}} ${{ secrets.ECR_REPOSITORY_URI}}/actions-app:latest
+          docker build -t ecr:${{ github.sha}} .
+          docker tag ecr:${{ github.sha}} ${{ secrets.ECR_REPOSITORY_URI }}/ecr:latest
+
+
       
       # Set up AWS Credentials
       - name: Configure AWS Credentials
@@ -60,11 +68,19 @@ jobs:
         run: |
           aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.ECR_REPOSITORY_URI }}
 
-      # Push image to Amazon ECR
+
       - name: Push image to Amazon ECR
         run: |
-          docker push ${{ secrets.ECR_REPOSITORY_URI}}/actions-app:latest
-        env:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          docker push ${{ secrets.ECR_REPOSITORY_URI }}/ecr:latest
+
+
+
+
+      # Push image to Amazon ECR
+#      - name: Push image to Amazon ECR
+#        run: |
+#          docker push ${{ secrets.ECR_REPOSITORY_URI}}/actions-app:latest
+#        env:
+#          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#          aws-region: ${{ secrets.AWS_REGION }}
