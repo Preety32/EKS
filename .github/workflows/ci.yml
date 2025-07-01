@@ -97,7 +97,7 @@ jobs:
       # Update Kubeconfig
       - name: Update kubeconfig
         run: aws eks --region ${{ secrets.AWS_REGION }} update-kubeconfig --name actions-eks-cluster
-         env:
+        env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
@@ -107,7 +107,7 @@ jobs:
         run: |
           TOKEN=$(aws eks get-token --cluster-name actions-eks-cluster | jq -r '.status.token')
           kubectl config set-credentials actions-eks-cluster --token=$TOKEN
-         env:
+        env:
            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
            AWS_REGION: ${{ secrets.AWS_REGION }}  
@@ -117,7 +117,7 @@ jobs:
       - name: Validate kubeconfig
         run: |
           kubectl get nodes
-         env:
+        env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
@@ -127,7 +127,7 @@ jobs:
         run: |
           kubectl apply -f k8s-manifests/deployment.yaml
           kubectl apply -f k8s-manifests/service.yaml
-         env:
+        env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}  
