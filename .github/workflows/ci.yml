@@ -99,11 +99,19 @@ jobs:
 
 
 
-      # Install kubectl
-      - name: Install kubectl
-        uses: azure/setup-kubectl@v3
-        with:
-          version: '1.31.0'  
+#      # Install kubectl
+#      - name: Install kubectl
+#       uses: azure/setup-kubectl@v3
+#        with:
+#          version: '1.31.0'  
+
+      - name: Install kubectl (manual method)
+        run: |
+          curl -LO "https://dl.k8s.io/release/v1.31.0/bin/linux/amd64/kubectl"
+          chmod +x kubectl
+          sudo mv kubectl /usr/local/bin/kubectl
+
+
 
 
       # Update Kubeconfig
