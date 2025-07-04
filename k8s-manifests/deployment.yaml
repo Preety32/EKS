@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: actions-app
-        image: 027619007323.dkr.ecr.us-west-1.amazonaws.com/repo-for-blog:latest
+        image: 772375824106.dkr.ecr.ap-south-1.amazonaws.com/ecr:latest
         ports:
         - containerPort: 3000
 

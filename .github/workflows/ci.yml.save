@@ -1,0 +1,35 @@
+name: CI/CD Pipeline Using Github Actions
+
+on:
+  push:
+    branches:
+      - Master
+  pull_request:
+    branches:
+      - Master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout Code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Set up NodeJS 
+      - name: Set up NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+
+      # Install NodeJS dependencies
+      - name: Install NodeJS dependencies
+        run: npm install
+
+# Docker Image Build
+- name: Build Docker Image
+  run: docker build -t $GITHUB_SHA .
+
+# Trivy Scan
+- name: Trivy Scan
+  run: docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image $GITHUB_SHA
